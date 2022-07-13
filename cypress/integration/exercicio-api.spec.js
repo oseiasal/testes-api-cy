@@ -34,7 +34,15 @@ describe('Testes da Funcionalidade Usuários', () => {
      });
 
      it('Deve validar um usuário com email inválido', () => {
-          //TODO: 
+          let fullName = "Beltrano de Oliveira"
+          let passwd = "teste"
+          let isAdmin = 'false'
+          let invalidEmail = "fulaninhodetalfggdqa.com.br"
+
+          cy.addUser(fullName, invalidEmail, passwd, isAdmin).then((response) => {
+               expect(response.status).to.equal(400)
+               expect(response.body.email).to.equal("email deve ser um email válido")
+          })
      });
 
      it('Deve editar um usuário previamente cadastrado', () => {
