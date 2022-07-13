@@ -20,7 +20,17 @@ describe('Testes da Funcionalidade Usuários', () => {
      });
 
      it('Deve cadastrar um usuário com sucesso', () => {
-          //TODO: 
+          let fullName = "Beltrano de Oliveira"
+          let nickname = "beltrano"
+          let passwd = "teste"
+          let year = Math.floor(Math.random() * 9999)
+          let email = `${nickname}.${year}@qa.com.br`
+          let isAdmin = 'false'
+
+          cy.addUser(fullName, email, passwd, isAdmin).then((response) => {
+               expect(response.status).to.equal(201)
+               expect(response.body.message).to.equal("Cadastro realizado com sucesso")
+          })
      });
 
      it('Deve validar um usuário com email inválido', () => {
