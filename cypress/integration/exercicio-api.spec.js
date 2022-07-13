@@ -11,7 +11,12 @@ describe('Testes da Funcionalidade Usuários', () => {
      });
 
      it('Deve listar usuários cadastrados', () => {
-          //TODO: 
+          cy.request({ method: 'GET', url: 'usuarios' })
+               .then((response) => {
+                    expect(response.status).to.equal(200)
+                    expect(response.body).to.have.property('usuarios')
+                    expect(response.body.usuarios.length).to.be.greaterThan(0)
+               })
      });
 
      it('Deve cadastrar um usuário com sucesso', () => {
