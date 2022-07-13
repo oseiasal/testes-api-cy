@@ -30,6 +30,7 @@ describe('Testes da Funcionalidade Usuários', () => {
           cy.addUser(fullName, email, passwd, isAdmin).then((response) => {
                expect(response.status).to.equal(201)
                expect(response.body.message).to.equal("Cadastro realizado com sucesso")
+               cy.log(`ID do novo usuário: ${response.body._id}`)
           })
      });
 
@@ -46,7 +47,7 @@ describe('Testes da Funcionalidade Usuários', () => {
      });
 
      it('Deve editar um usuário previamente cadastrado', () => {
-          let id = 'GiLkQNACA2nOkyBW'
+          let id = "dQg5ti0JypOzLEdq"
           let fullName = "Beltrano de Oliveira"
           let passwd = "teste"
           let email = `beltrano.${Math.floor(Math.random() * 9999)}@qa.com.br`
@@ -59,7 +60,15 @@ describe('Testes da Funcionalidade Usuários', () => {
      });
 
      it('Deve deletar um usuário previamente cadastrado', () => {
-          //TODO: 
+          let id = "dQg5ti0JypOzLEdq"
+
+          cy.request({
+               method: 'DELETE',
+               url: "usuarios/" + id
+          }).then((response) => {
+               expect(response.status).to.equal(200)
+               expect(response.body.message).to.equal("Registro excluído com sucesso")
+          })
      });
 
 
