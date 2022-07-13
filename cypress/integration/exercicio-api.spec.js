@@ -37,7 +37,7 @@ describe('Testes da Funcionalidade Usuários', () => {
           let fullName = "Beltrano de Oliveira"
           let passwd = "teste"
           let isAdmin = 'false'
-          let invalidEmail = "fulaninhodetalfggdqa.com.br"
+          let invalidEmail = "www.google.com"
 
           cy.addUser(fullName, invalidEmail, passwd, isAdmin).then((response) => {
                expect(response.status).to.equal(400)
@@ -46,7 +46,16 @@ describe('Testes da Funcionalidade Usuários', () => {
      });
 
      it('Deve editar um usuário previamente cadastrado', () => {
-          //TODO: 
+          let id = 'GiLkQNACA2nOkyBW'
+          let fullName = "Beltrano de Oliveira"
+          let passwd = "teste"
+          let email = `beltrano.${Math.floor(Math.random() * 9999)}@qa.com.br`
+          let isAdmin = 'false'
+
+          cy.editUser(id, fullName, email, passwd, isAdmin).then((response) => {
+               expect(response.status).to.equal(200)
+               expect(response.body.message).to.equal("Registro alterado com sucesso")
+          })
      });
 
      it('Deve deletar um usuário previamente cadastrado', () => {

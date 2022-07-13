@@ -63,3 +63,15 @@ Cypress.Commands.add('addUser', (fullName, email, passwd, isAdmin) => {
         }
     })
 })
+
+Cypress.Commands.add('editUser', (id, fullName, email, passwd, isAdmin) => {
+    cy.request({
+        failOnStatusCode: false,
+        method: 'PUT', url: 'usuarios/' + id, body: {
+            "nome": fullName,
+            "email": email,
+            "password": passwd,
+            "administrador": isAdmin
+        }
+    })
+})
