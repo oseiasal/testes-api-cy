@@ -2,7 +2,6 @@
 import user from '../contracts/users.contract'
 
 describe('Testes da Funcionalidade Usuários', () => {
-     let newUserId = ""
 
      it('Deve validar contrato de usuários', () => {
           cy.request('usuarios').then((response) => {
@@ -31,8 +30,6 @@ describe('Testes da Funcionalidade Usuários', () => {
           cy.addUser(fullName, email, passwd, isAdmin).then((response) => {
                expect(response.status).to.equal(201)
                expect(response.body.message).to.equal("Cadastro realizado com sucesso")
-               // cy.log(`ID do novo usuário: ${response.body._id}`)
-               newUserId = response.body._id
           })
      });
 
@@ -49,29 +46,38 @@ describe('Testes da Funcionalidade Usuários', () => {
      });
 
      it('Deve editar um usuário previamente cadastrado', () => {
-          // let id = "dQg5ti0JypOzLEdq"
           let fullName = "Beltrano de Oliveira"
           let passwd = "teste"
           let email = `beltrano.${Math.floor(Math.random() * 9999)}@qa.com.br`
           let isAdmin = 'false'
 
-          cy.editUser(newUserId, fullName, email, passwd, isAdmin).then((response) => {
-               expect(response.status).to.equal(200)
-               expect(response.body.message).to.equal("Registro alterado com sucesso")
+          cy.addUser(fullName, email, passwd, isAdmin).then(response => {
+               const { _id } = response.body
+
+               cy.editUser(_id, fullName, email, passwd, isAdmin).then((response) => {
+                    expect(response.status).to.equal(200)
+                    expect(response.body.message).to.equal("Registro alterado com sucesso")
+               })
           })
      });
 
      it('Deve deletar um usuário previamente cadastrado', () => {
-          // let id = "dQg5ti0JypOzLEdq"
+          let fullName = "Beltrano de Oliveira"
+          let passwd = "teste"
+          let email = `beltrano.${Math.floor(Math.random() * 9999)}@qa.com.br`
+          let isAdmin = 'false'
 
-          cy.request({
-               method: 'DELETE',
-               url: "usuarios/" + newUserId
-          }).then((response) => {
-               expect(response.status).to.equal(200)
-               expect(response.body.message).to.equal("Registro excluído com sucesso")
+          cy.addUser(fullName, email, passwd, isAdmin).then(response => {
+               const { _id } = response.body
+
+               cy.request({
+                    method: 'DELETE',
+                    url: "usuarios/" + _id
+               }).then((response) => {
+                    expect(response.status).to.equal(200)
+                    expect(response.body.message).to.equal("Registro excluído com sucesso")
+               })
           })
      });
-
 
 });
